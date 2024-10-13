@@ -4,6 +4,12 @@ export default {
   content: ["./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      colors: {
+        border: 'rgb(58,58,60)',
+        yellowBackground: 'rgb(178,159,77)',
+        correct: 'rgb(97, 139, 85)',
+        grayLetter: 'rgb(130,131,132)'
+      },
       fontFamily: {
         sans: [
           '"Inter"',
