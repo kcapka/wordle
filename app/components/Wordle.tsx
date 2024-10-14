@@ -2,8 +2,7 @@ import { useState } from "react";
 import Guess from "./Guess";
 import Instructions from "./Instructions";
 import { motion } from 'framer-motion';
-
-const word = ['r', 'e', 'a', 'c', 't'];
+import wordList from '../resources/wordList.json';
 
 const keyboardRowOne = [
   'q',
@@ -44,13 +43,17 @@ const keyboardRowThree = [
 //right letter, wrong spot yellowBackground
 //green correct
 //gray grayLetter
+//total words 620
 
 export default function Wordle() {
 
+  const baseWord = wordList[5000].word;
+  const word = baseWord.split('');
+
   //game states
-  const [win, setWin] = useState(false);
-  const [lose, setLose] = useState(false);
+  const [alert, setAlert] = useState('');
   const [showInstructions, setShowInstructions] = useState(true);
+  
 
 
   //The current guess that is being typed, but not yet submitted
@@ -91,10 +94,19 @@ export default function Wordle() {
 
   function handleSubmit() {
     if(currentSelectedWord.length < 5) {
-      alert("Please guess a five letter word");
+      setAlert("Please guess a five letter word");
+      setTimeout(() => {
+        setAlert('');
+      }, 2000);
+      return;
+    }  else if(!wordList.some(item => item.word === currentSelectedWord.join(''))) {
+      setAlert('Not in the word list!');
+      setTimeout(() => {
+        setAlert('');
+      }, 2000);
       return;
     } else if(currentSelectedWord.join('') == word.join('')) {
-      setWin(true);
+      setAlert(`Congrats! You guessed the wordle on guess ${currentGuess}`);
       currentSelectedWord.map((letter) => {
         handleKeyboardColors(letter, 'correct');
       })
@@ -192,7 +204,7 @@ export default function Wordle() {
       setCurrentSelectedWord([]);
       setCurrentGuess(6);
     } else if(currentGuess == 6) {
-      setLose(true)
+      setAlert(`Oh no, so close! The word was ${baseWord.toUpperCase()}`);
       currentSelectedWord.map((letter, index) => {
         setGuessSix(prevGuessSix => [...prevGuessSix, letter]);
         if(letter == word[index]) {
@@ -225,20 +237,12 @@ export default function Wordle() {
       <h1 className={`text-center font-sans text-5xl mb-4 tracking-[3.2px] font-bold`}>Wordle</h1>
       
       <div className="mb-4 relative">
-        {win && (
+        {alert && (
           <motion.div 
           initial={{scale: 0}}
           animate={{scale: 1}}
           className="absolute top-1 w-full flex justify-center items-center h-full z-10">
-            <p className="text-center text-sm w-[200px] mx-auto py-2 px-6 text-black bg-white rounded">Congrats! You guessed the wordle on guess {currentGuess}</p>
-          </motion.div>
-        )}
-        {lose && (
-          <motion.div 
-          initial={{scale: 0}}
-          animate={{scale: 1}}
-          className="absolute top-1 w-full flex justify-center items-center h-full z-10">
-            <p className="text-center text-sm w-[200px] mx-auto py-2 px-6 text-black bg-white rounded">Oh no, so close!</p>
+            <p className="text-center text-sm w-[200px] mx-auto py-2 px-6 text-black bg-white rounded">{alert}</p>
           </motion.div>
         )}
         {/* Guesses */}
