@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Guess from "./Guess";
 import Instructions from "./Instructions";
 import { motion } from 'framer-motion';
@@ -45,10 +45,17 @@ const keyboardRowThree = [
 //gray grayLetter
 //total words 620
 
+
+
 export default function Wordle() {
 
-  const baseWord = wordList[5000].word;
-  const word = baseWord.split('');
+  const [word, setWord] = useState<string[]>([]);
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * 9378);
+    const baseWord = wordList[randomIndex].word.split('');
+    setWord(baseWord);
+  }, []);
 
   //game states
   const [alert, setAlert] = useState('');
