@@ -4,8 +4,8 @@ import Wordle from "~/components/Wordle";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Wordle Clone" },
+    { name: "description", content: "This site is a clone of the popular New York Times game, Wordle! However, as opposed to the original game, you can play this one as many times a day as you'd like!" },
   ];
 };
 
