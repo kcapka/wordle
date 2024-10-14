@@ -5,7 +5,7 @@ export default function Instructions({setShowInstructions}: any) {
 
     return (
         <div className="fixed w-[100svw] h-[100svh] top-0 left-0 bg-[rgb(0,0,0,0.7)] flex pt-16 items-start justify-center">
-          <div className="bg-[rgb(18,18,19)] relative pt-16 px-12 w-full max-w-[550px] pb-8 rounded-lg">
+          <div className="bg-[rgb(18,18,19)] relative pt-16 px-12 w-full max-w-[550px] pb-8 rounded-lg overflow-scroll">
             <button className="text-3xl font-bold absolute top-4 right-4" onClick={() => setShowInstructions(false)}>X</button>
             <h1 className="font-serif text-2xl font-bold mb-1">How to play</h1>
             <p className="text-lg font-serif mb-2 font-normal">Guess the Wordle in 6 tries.</p>

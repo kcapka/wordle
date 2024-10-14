@@ -2,7 +2,7 @@ import { useState } from "react";
 import Guess from "./Guess";
 import Instructions from "./Instructions";
 
-const word = ['a', 'p', 'p', 'l', 'e'];
+const word = ['r', 'e', 'a', 'c', 't'];
 
 const keyboardRowOne = [
   'q',
@@ -30,35 +30,6 @@ const keyboardRowTwo = [
 ];
 
 const keyboardRowThree = [
-  'z',
-  'x',
-  'c',
-  'v',
-  'b',
-  'n',
-  'm',
-]
-
-let alphabet = [
-  'q',
-  'w',
-  'e',
-  'r',
-  't',
-  'y',
-  'u',
-  'i',
-  'o',
-  'p',
-  'a',
-  's',
-  'd',
-  'f',
-  'g',
-  'h',
-  'j',
-  'k',
-  'l',
   'z',
   'x',
   'c',
@@ -122,6 +93,8 @@ export default function Wordle() {
     if(currentSelectedWord.length < 5) {
       alert("Please guess a five letter word");
       return;
+    } else if(currentSelectedWord.join('') == word.join('')) {
+      alert(`Congratulations! You guessed the wordle in ${currentGuess} try/tries!`)
     } else if(currentGuess == 1) {
       currentSelectedWord.map((letter, index) => {
         setGuessOne(prevGuessOne => [...prevGuessOne, letter]);
@@ -187,6 +160,7 @@ export default function Wordle() {
       setCurrentSelectedWord([]);
       setCurrentGuess(5);
     } else if(currentGuess == 5) {
+      alert("Oh no, so close! Try again");
       currentSelectedWord.map((letter, index) => {
         setGuessFive(prevGuessFive => [...prevGuessFive, letter]);
         if(letter == word[index]) {
