@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Guess from "./Guess";
 import Instructions from "./Instructions";
+import { motion } from 'framer-motion';
 
 const word = ['r', 'e', 'a', 'c', 't'];
 
@@ -74,7 +75,6 @@ export default function Wordle() {
 
   //This will hold the colors of the letters on the virtual keyboard
   const [keyboardColors, setKeyboardColors] = useState<any>({});
-  console.log(keyboardColors)
 
   function handleLetterSelect(letter: string) {
     if(currentGuess < 7 && currentSelectedWord.length < 5){
@@ -94,7 +94,23 @@ export default function Wordle() {
       alert("Please guess a five letter word");
       return;
     } else if(currentSelectedWord.join('') == word.join('')) {
-      alert(`Congratulations! You guessed the wordle in ${currentGuess} try/tries!`)
+      setWin(true);
+      currentSelectedWord.map((letter) => {
+        handleKeyboardColors(letter, 'correct');
+      })
+      if(currentGuess == 1) {
+        setGuessOneColors(['correct', 'correct', 'correct', 'correct', 'correct']);
+      } else if(currentGuess == 2) {
+        setGuessTwoColors(['correct', 'correct', 'correct', 'correct', 'correct']);
+      } else if(currentGuess == 3) {
+        setGuessThreeColors(['correct', 'correct', 'correct', 'correct', 'correct']);
+      } else if(currentGuess == 4) {
+        setGuessFourColors(['correct', 'correct', 'correct', 'correct', 'correct']);
+      } else if(currentGuess == 5) {
+        setGuessFiveColors(['correct', 'correct', 'correct', 'correct', 'correct']);
+      } else if(currentGuess == 6) {
+        setGuessSixColors(['correct', 'correct', 'correct', 'correct', 'correct']);
+      }
     } else if(currentGuess == 1) {
       currentSelectedWord.map((letter, index) => {
         setGuessOne(prevGuessOne => [...prevGuessOne, letter]);
@@ -160,7 +176,6 @@ export default function Wordle() {
       setCurrentSelectedWord([]);
       setCurrentGuess(5);
     } else if(currentGuess == 5) {
-      alert("Oh no, so close! Try again");
       currentSelectedWord.map((letter, index) => {
         setGuessFive(prevGuessFive => [...prevGuessFive, letter]);
         if(letter == word[index]) {
@@ -177,6 +192,7 @@ export default function Wordle() {
       setCurrentSelectedWord([]);
       setCurrentGuess(6);
     } else if(currentGuess == 6) {
+      setLose(true)
       currentSelectedWord.map((letter, index) => {
         setGuessSix(prevGuessSix => [...prevGuessSix, letter]);
         if(letter == word[index]) {
@@ -206,8 +222,25 @@ export default function Wordle() {
       {showInstructions && (
         <Instructions setShowInstructions={setShowInstructions} />
       )}
-      <h1 className="text-center font-sans text-5xl mb-8 tracking-[3.2px] font-bold">Wordle</h1>
-      <div className="mb-4">
+      <h1 className={`text-center font-sans text-5xl mb-4 tracking-[3.2px] font-bold`}>Wordle</h1>
+      
+      <div className="mb-4 relative">
+        {win && (
+          <motion.div 
+          initial={{scale: 0}}
+          animate={{scale: 1}}
+          className="absolute top-1 w-full flex justify-center items-center h-full z-10">
+            <p className="text-center text-sm w-[200px] mx-auto py-2 px-6 text-black bg-white rounded">Congrats! You guessed the wordle on guess {currentGuess}</p>
+          </motion.div>
+        )}
+        {lose && (
+          <motion.div 
+          initial={{scale: 0}}
+          animate={{scale: 1}}
+          className="absolute top-1 w-full flex justify-center items-center h-full z-10">
+            <p className="text-center text-sm w-[200px] mx-auto py-2 px-6 text-black bg-white rounded">Oh no, so close!</p>
+          </motion.div>
+        )}
         {/* Guesses */}
         <Guess guess={guessOne} currentGuess = {currentGuess} order={1} guessColors={guessOneColors} currentSelectedWord={currentSelectedWord} />
         <Guess guess={guessTwo} currentGuess = {currentGuess} order={2} guessColors={guessTwoColors} currentSelectedWord={currentSelectedWord} />
