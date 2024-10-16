@@ -4,6 +4,7 @@ import Instructions from "./Instructions";
 import { motion } from 'framer-motion';
 import wordList from '../resources/wordList.json';
 import { useNavigate } from "@remix-run/react";
+import possibleAnswers from '../resources/possibleAnswers.json';
 
 const keyboardRowOne = [
   'q',
@@ -335,8 +336,8 @@ export default function Wordle() {
       setWord(JSON.parse(wordData));
     }
     if(!wordData) {
-      const randomIndex = Math.floor(Math.random() * 9378);
-      const baseWord = wordList[randomIndex].word.split('');
+      const randomIndex = Math.floor(Math.random() * 400);
+      const baseWord = possibleAnswers[randomIndex].toLowerCase().split('');
       setWord(baseWord);
     }
 
