@@ -81,6 +81,9 @@ export default function Wordle() {
   //indicates which guess the player is currently on. On guess 7, the game is over.
   const [currentGuess, setCurrentGuess] = useState(1);
 
+  //only used to show animation of new game button
+  const [win, setWin] = useState(false);
+
   //variables for each guess and color for each guess
   //Ideally, I would have all needed variables stored in one variable in an object. For now, they are all separate and I have to store them all in local storage separately
   const [guessOne, setGuessOne] = useState<string[]>([]);
@@ -132,6 +135,7 @@ export default function Wordle() {
       setTimeout(() => {
         setAlert('');
       }, 2000);
+      setWin(true);
       currentSelectedWord.map((letter) => {
         handleKeyboardColors(letter, 'correct');
       })
@@ -233,6 +237,7 @@ export default function Wordle() {
       setTimeout(() => {
         setAlert('');
       }, 2000);
+      setWin(true);
       currentSelectedWord.map((letter, index) => {
         setGuessSix(prevGuessSix => [...prevGuessSix, letter]);
         if(letter == word[index]) {
@@ -471,6 +476,7 @@ export default function Wordle() {
   //Game reset
   const [showConfirm, setShowConfirm] = useState(false);
   function handleNewGame() {
+    setWin(false);
     setShowConfirm(true);
     setAlert('');
   }
@@ -484,16 +490,31 @@ export default function Wordle() {
     window.localStorage.setItem('wrd_showInstructions', 'true');
   }
 
+  const animationVariants = {
+    initial: { opacity: 1, scale: 1 },
+    animate: {
+      opacity: 1,
+      scale: [1, 1.2, 1], // Example scaling animation
+      transition: {
+        duration: 1,
+        repeat: win ? Infinity : 0, // Loop indefinitely if isAnimating is true
+        ease: "easeInOut",
+      },
+    },
+  };
+
   return (
     <div className="flex min-h-[100svh] items-center flex-col py-8 px-[20px] md:px-[60px] justify-start text-white bg-[rgb(18,18,19)]">
       {showInstructions && (
         <Instructions setShowInstructions={setShowInstructions} />
       )}
-      <nav className="flex gap-8 mb-16 w-full justify-between">
+      <nav className="flex gap-8 mb-16 items-center w-full justify-between">
         <h1 className={`font-sans text-xl md:text-5xl mb-4 tracking-[3.2px] font-bold`}>Wordle</h1>
         <div className="flex items-center text-sm md:text-base gap-4">
           <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-yellowBackground" onClick={handleInstructionsButton}>Instructions</motion.button>
-          <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-correct" onClick={handleNewGame}>New Game</motion.button>
+          <motion.div initial={{scale: .5}} animate={{scale: [1.3, 1]}}>
+            <motion.button variants={animationVariants} initial="initial" animate={win ? "animate" : "initial"} className="rounded py-2 px-4 bg-correct" onClick={handleNewGame}>New Game</motion.button>
+          </motion.div>
         </div>
       </nav>
       {showConfirm && (
