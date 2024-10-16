@@ -3,6 +3,7 @@ import Guess from "./Guess";
 import Instructions from "./Instructions";
 import { motion } from 'framer-motion';
 import wordList from '../resources/wordList.json';
+import { useNavigate } from "@remix-run/react";
 
 const keyboardRowOne = [
   'q',
@@ -43,26 +44,36 @@ const keyboardRowThree = [
 //right letter, wrong spot yellowBackground
 //green correct
 //gray grayLetter
-//total words 620
+
+// LOCAL STORAGE VARIABLES:
+// Wordle answer: ans_w_current
+//wrd_alert
+//wrd_currentSelectedWord
+//wrd_currentGuess
+//wrd_guessOne
+//wrd_guessOneColors
+//wrd_guessTwo
+//wrd_guessTwoColors
+//wrd_guessThree
+//wrd_guessThreeColors
+//wrd_guessFour
+//wrd_guessFourColors
+//wrd_guessFive
+//wrd_guessFiveColors
+//wrd_guessSix
+//wrd_guessSixColors
+//wrd_keyboardColors
 
 
 
 export default function Wordle() {
 
-  const [word, setWord] = useState<string[]>([]);
-
-  useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * 9378);
-    const baseWord = wordList[randomIndex].word.split('');
-    setWord(baseWord);
-  }, []);
+  const [word, setWord] = useState<string[]>();
 
   //game states
   const [alert, setAlert] = useState('');
-  const [showInstructions, setShowInstructions] = useState(true);
+  const [showInstructions, setShowInstructions] = useState(false);
   
-
-
   //The current guess that is being typed, but not yet submitted
   const [currentSelectedWord, setCurrentSelectedWord] = useState<string[]>([]);
 
@@ -70,6 +81,7 @@ export default function Wordle() {
   const [currentGuess, setCurrentGuess] = useState(1);
 
   //variables for each guess and color for each guess
+  //Ideally, I would have all needed variables stored in one variable in an object. For now, they are all separate and I have to store them all in local storage separately
   const [guessOne, setGuessOne] = useState<string[]>([]);
   const [guessOneColors, setGuessOneColors] = useState<string[]>([]);
   const [guessTwo, setGuessTwo] = useState<string[]>([]);
@@ -99,6 +111,8 @@ export default function Wordle() {
     }))
   }
 
+  console.log('currentWord', currentSelectedWord)
+
   function handleSubmit() {
     if(currentSelectedWord.length < 5) {
       setAlert("Please guess a five letter word");
@@ -106,13 +120,15 @@ export default function Wordle() {
         setAlert('');
       }, 2000);
       return;
+    } else if(currentSelectedWord.length > 5) {
+      setCurrentSelectedWord([]);
     }  else if(!wordList.some(item => item.word === currentSelectedWord.join(''))) {
       setAlert('Not in the word list!');
       setTimeout(() => {
         setAlert('');
       }, 2000);
       return;
-    } else if(currentSelectedWord.join('') == word.join('')) {
+    } else if(currentSelectedWord.join('') == word?.join('')) {
       setAlert(`Congrats! You guessed the wordle on guess ${currentGuess}`);
       currentSelectedWord.map((letter) => {
         handleKeyboardColors(letter, 'correct');
@@ -136,7 +152,7 @@ export default function Wordle() {
         if(letter == word[index]) {
           handleKeyboardColors(letter, 'correct');
           setGuessOneColors(prevGuessOneColors => [...prevGuessOneColors, 'correct']);
-        } else if(word.includes(letter)) {
+        } else if(word?.includes(letter)) {
           handleKeyboardColors(letter, 'yellow')
           setGuessOneColors(prevGuessOneColors => [...prevGuessOneColors, 'yellow']);
         } else {
@@ -152,7 +168,7 @@ export default function Wordle() {
         if(letter == word[index]) {
           handleKeyboardColors(letter, 'correct');
           setGuessTwoColors(prevGuessTwoColors => [...prevGuessTwoColors, 'correct']);
-        } else if(word.includes(letter)) {
+        } else if(word?.includes(letter)) {
           handleKeyboardColors(letter, 'yellow');
           setGuessTwoColors(prevGuessTwoColors => [...prevGuessTwoColors, 'yellow']);
         } else {
@@ -168,7 +184,7 @@ export default function Wordle() {
         if(letter == word[index]) {
           handleKeyboardColors(letter, 'correct');
           setGuessThreeColors(prevGuessThreeColors => [...prevGuessThreeColors, 'correct']);
-        } else if(word.includes(letter)) {
+        } else if(word?.includes(letter)) {
           handleKeyboardColors(letter, 'yellow');
           setGuessThreeColors(prevGuessThreeColors => [...prevGuessThreeColors, 'yellow']);
         } else {
@@ -184,7 +200,7 @@ export default function Wordle() {
         if(letter == word[index]) {
           handleKeyboardColors(letter, 'correct');
           setGuessFourColors(prevGuessFourColors => [...prevGuessFourColors, 'correct']);
-        } else if(word.includes(letter)) {
+        } else if(word?.includes(letter)) {
           handleKeyboardColors(letter, 'yellow');
           setGuessFourColors(prevGuessFourColors => [...prevGuessFourColors, 'yellow']);
         } else {
@@ -200,7 +216,7 @@ export default function Wordle() {
         if(letter == word[index]) {
           handleKeyboardColors(letter, 'correct');
           setGuessFiveColors(prevGuessFiveColors => [...prevGuessFiveColors, 'correct']);
-        } else if(word.includes(letter)) {
+        } else if(word?.includes(letter)) {
           handleKeyboardColors(letter, 'yellow');
           setGuessFiveColors(prevGuessFiveColors => [...prevGuessFiveColors, 'yellow']);
         } else {
@@ -211,13 +227,13 @@ export default function Wordle() {
       setCurrentSelectedWord([]);
       setCurrentGuess(6);
     } else if(currentGuess == 6) {
-      setAlert(`Oh no, so close! The word was ${baseWord.toUpperCase()}`);
+      setAlert(`Oh no, so close! The word was ${word?.join('').toUpperCase()}`);
       currentSelectedWord.map((letter, index) => {
         setGuessSix(prevGuessSix => [...prevGuessSix, letter]);
         if(letter == word[index]) {
           handleKeyboardColors(letter, 'correct');
           setGuessSixColors(prevGuessSixColors => [...prevGuessSixColors, 'correct']);
-        } else if(word.includes(letter)) {
+        } else if(word?.includes(letter)) {
           handleKeyboardColors(letter, 'yellow');
           setGuessSixColors(prevGuessSixColors => [...prevGuessSixColors, 'yellow']);
         } else {
@@ -234,6 +250,222 @@ export default function Wordle() {
     if(currentSelectedWord.length > 0) {
       setCurrentSelectedWord((prevCurrentSelectedWord) => prevCurrentSelectedWord.slice(0,-1));
     }
+  }
+
+  const storageKeys = [
+    {
+      variable: word,
+      key: 'ans_w_current',
+    },
+    {
+      variable: currentSelectedWord,
+      key: 'wrd_currentSelectedWord',
+    },
+    {
+      variable: currentGuess,
+      key: 'wrd_currentGuess',
+    },
+    {
+      variable: guessOne,
+      key: 'wrd_guessOne'
+    },
+    {
+      variable: guessOneColors,
+      key: 'wrd_guessOneColors'
+    },
+    {
+      variable: guessTwo,
+      key: 'wrd_guessTwo'
+    },
+    {
+      variable: guessTwoColors,
+      key: 'wrd_guessTwoColors'
+    },
+    {
+      variable: guessThree,
+      key: 'wrd_guessThree'
+    },
+    {
+      variable: guessThreeColors,
+      key: 'wrd_guessThreeColors'
+    },
+    {
+      variable: guessFour,
+      key: 'wrd_guessFour'
+    },
+    {
+      variable: guessFourColors,
+      key: 'wrd_guessFourColors'
+    },
+    {
+      variable: guessFive,
+      key: 'wrd_guessFive'
+    },
+    {
+      variable: guessFiveColors,
+      key: 'wrd_guessFiveColors'
+    },
+    {
+      variable: guessSix,
+      key: 'wrd_guessSix'
+    },
+    {
+      variable: guessSixColors,
+      key: 'wrd_guessSixColors'
+    },
+    {
+      variable: keyboardColors,
+      key: 'wrd_keyboardColors',
+    }
+  ]
+
+  //Local storage management
+  useEffect(() => {
+
+    //hide instructions if already seen
+    window.localStorage.getItem('ans_w_current') 
+    ? setShowInstructions(false) 
+    : setTimeout(() => {
+      setShowInstructions(true);
+    }, 500);
+
+    //reset all variables
+    const wordData = window.localStorage.getItem('ans_w_current');
+    if(wordData && wordData !== 'undefined') {
+      setWord(JSON.parse(wordData));
+    }
+    if(!wordData) {
+      const randomIndex = Math.floor(Math.random() * 9378);
+      const baseWord = wordList[randomIndex].word.split('');
+      setWord(baseWord);
+    }
+
+    const keyboardColorsData = window.localStorage.getItem('wrd_keyboardColors');
+    if(keyboardColorsData && keyboardColorsData !== 'undefined' && keyboardColorsData !== '{}') {
+      setKeyboardColors(JSON.parse(keyboardColorsData));
+    }
+    if(!keyboardColorsData) {
+      setKeyboardColors([]);
+    }
+
+    const currentSelectedWordData = window.localStorage.getItem('wrd_currentSelectedWord');
+    if(currentSelectedWordData && currentSelectedWordData !== 'undefined' && currentSelectedWordData !== '[]') {
+      setCurrentSelectedWord(JSON.parse(currentSelectedWordData));
+    }
+    if(!currentSelectedWordData) {
+      setCurrentSelectedWord([]);
+    }
+
+    const currentGuessData = window.localStorage.getItem('wrd_currentGuess');
+    if(currentGuessData && currentGuessData !== 'undefined' && currentGuessData !== '1') {
+      setCurrentGuess(JSON.parse(currentGuessData));
+    } 
+    if(!currentGuessData) {
+      setCurrentGuess(1);
+    }
+
+    const guessOneData = window.localStorage.getItem('wrd_guessOne');
+    if(guessOneData && guessOneData !== 'undefined' && guessOneData !== '[]') {
+      setGuessOne(JSON.parse(guessOneData));
+    }
+    if(!guessOneData) {
+      setGuessOne([]);
+    }
+    const guessOneColors = window.localStorage.getItem('wrd_guessOneColors');
+    if(guessOneColors && guessOneColors !== 'undefined' && guessOneColors !== '[]') {
+      setGuessOneColors(JSON.parse(guessOneColors));
+    }
+    if(!guessOneColors) {
+      setGuessOneColors([]);
+    }
+
+    const guessTwoData = window.localStorage.getItem('wrd_guessTwo');
+    if(guessTwoData && guessTwoData !== 'undefined' && guessTwoData !== '[]') {
+      setGuessTwo(JSON.parse(guessTwoData));
+    }
+    if(!guessTwoData) {
+      setGuessTwo([]);
+    }
+    const guessTwoColorsData = window.localStorage.getItem('wrd_guessTwoColors');
+    if(guessTwoColorsData && guessTwoColorsData !== 'undefined' && guessTwoColorsData !== '[]') {
+      setGuessTwoColors(JSON.parse(guessTwoColorsData));
+    }
+    if(!guessTwoColorsData) {
+      setGuessTwoColors([]);
+    }
+
+    const guessThreeData = window.localStorage.getItem('wrd_guessThree');
+    if(guessThreeData && guessThreeData !== 'undefined' && guessThreeData !== '[]') {
+      setGuessThree(JSON.parse(guessThreeData));
+    }
+    if(!guessThreeData) {
+      setGuessThree([]);
+    }
+    const guessThreeColorsData = window.localStorage.getItem('wrd_guessThreeColors');
+    if(guessThreeColorsData && guessThreeColorsData !== 'undefined' && guessThreeColorsData !== '[]') {
+      setGuessThreeColors(JSON.parse(guessThreeColorsData));
+    }
+    if(!guessThreeColorsData) {
+      setGuessThreeColors([]);
+    }
+
+    const guessFourData = window.localStorage.getItem('wrd_guessFour');
+    if(guessFourData && guessFourData !== 'undefined' && guessFourData !== '[]') {
+      setGuessFour(JSON.parse(guessFourData));
+    }
+    if(!guessFourData) {
+      setGuessFour([]);
+    }
+    const guessFourColorsData = window.localStorage.getItem('wrd_guessFourColors');
+    if(guessFourColorsData && guessFourColorsData !== 'undefined' && guessFourColorsData !== '[]') {
+      setGuessFourColors(JSON.parse(guessFourColorsData));
+    }
+    if(!guessFourColorsData) {
+      setGuessFourColors([]);
+    }
+
+    const guessFiveData = window.localStorage.getItem('wrd_guessFive');
+    if(guessFiveData && guessFiveData !== 'undefined' && guessFiveData !== '[]') {
+      setGuessFive(JSON.parse(guessFiveData));
+    }
+    if(!guessFiveData) {
+      setGuessFive([]);
+    }
+    const guessFiveColorsData = window.localStorage.getItem('wrd_guessFiveColors');
+    if(guessFiveColorsData && guessFiveColorsData !== 'undefined' && guessFiveColorsData !== '[]') {
+      setGuessFiveColors(JSON.parse(guessFiveColorsData));
+    }
+    if(!guessFiveColorsData) {
+      setGuessFiveColors([]);
+    }
+
+    const guessSixData = window.localStorage.getItem('wrd_guessSix');
+    if(guessSixData && guessSixData !== 'undefined' && guessSixData !== '[]') {
+      setGuessSix(JSON.parse(guessSixData));
+    }
+    if(!guessSixData) {
+      setGuessSix([]);
+    }
+    const guessSixColorsData = window.localStorage.getItem('wrd_guessSixColors');
+    if(guessSixColorsData && guessSixColorsData !== 'undefined' && guessSixColorsData !== '[]') {
+      setGuessSixColors(JSON.parse(guessSixColorsData));
+    }
+    if(!guessSixColorsData) {
+      setGuessSixColors([]);
+    }
+
+  }, []);
+
+  useEffect(() => {
+    storageKeys.map((key) => {
+      window.localStorage.setItem(key.key, JSON.stringify(key.variable));
+    })
+  }, [word, currentSelectedWord, currentGuess, guessOne, guessOneColors, guessTwo, guessTwoColors, guessThree, guessThreeColors, guessFour, guessFourColors, guessFive, guessFiveColors, guessSix, guessSixColors]);
+
+  //Game reset
+  function handleReset() {
+    window.localStorage.clear();
+    window.location.reload();
   }
 
   return (
@@ -260,6 +492,7 @@ export default function Wordle() {
         <Guess guess={guessFive} currentGuess = {currentGuess} order={5} guessColors={guessFiveColors} currentSelectedWord={currentSelectedWord} />
         <Guess guess={guessSix} currentGuess = {currentGuess} order={6} guessColors={guessSixColors} currentSelectedWord={currentSelectedWord} />
       </div>
+      {/* Keyboard */}
       <div className="flex mb-2 items-center gap-2">
         {keyboardRowOne.map((letter, index) => (
           <button key={index} onClick={() => handleLetterSelect(letter)} className={`${keyboardColors[letter] == 'correct' ? 'bg-correct' : keyboardColors[letter] == 'yellow' ? 'bg-yellowBackground' : keyboardColors[letter] == 'wrong' ? 'bg-border' : 'bg-grayLetter'} w-8 h-10 md:w-10 md:h-12 rounded flex items-center justify-center uppercase font-bold cursor-pointer`}>
