@@ -323,7 +323,7 @@ export default function Wordle() {
   useEffect(() => {
 
     //hide instructions if already seen
-    window.localStorage.getItem('ans_w_current') 
+    window.localStorage.getItem('wrd_showInstructions') 
     ? setShowInstructions(false) 
     : setTimeout(() => {
       setShowInstructions(true);
@@ -459,22 +459,41 @@ export default function Wordle() {
   useEffect(() => {
     storageKeys.map((key) => {
       window.localStorage.setItem(key.key, JSON.stringify(key.variable));
-    })
+    });
+    window.localStorage.setItem('wrd_showInstructions', 'true')
   }, [word, currentSelectedWord, currentGuess, guessOne, guessOneColors, guessTwo, guessTwoColors, guessThree, guessThreeColors, guessFour, guessFourColors, guessFive, guessFiveColors, guessSix, guessSixColors]);
 
   //Game reset
+  const [showConfirm, setShowConfirm] = useState(false);
   function handleReset() {
     window.localStorage.clear();
     window.location.reload();
+    window.localStorage.setItem('wrd_showInstructions', 'true');
   }
 
   return (
-    <div className="flex min-h-[100svh] items-center flex-col py-16 justify-start text-white bg-[rgb(18,18,19)]">
+    <div className="flex min-h-[100svh] items-center flex-col py-8 px-[20px] md:px-[60px] justify-start text-white bg-[rgb(18,18,19)]">
       {showInstructions && (
         <Instructions setShowInstructions={setShowInstructions} />
       )}
-      <h1 className={`text-center font-sans text-5xl mb-4 tracking-[3.2px] font-bold`}>Wordle</h1>
-      
+      <nav className="flex gap-8 mb-16 w-full justify-between">
+        <h1 className={`font-sans text-5xl mb-4 tracking-[3.2px] font-bold`}>Wordle</h1>
+        <div className="flex items-center gap-4">
+          <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-yellowBackground" onClick={() => setShowInstructions(true)}>Instructions</motion.button>
+          <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-correct" onClick={() => setShowConfirm(true)}>New Game</motion.button>
+        </div>
+      </nav>
+      {showConfirm && (
+        <div className="fixed w-[100svw] z-10 h-[100svh] top-0 left-0 bg-[rgb(0,0,0,0.7)] flex items-center justify-center">
+          <div className="rounded-lg text-lg text-center font-sans bg-[rgb(18,18,19)] p-8 w-full max-w-[600px]">
+            <p className="mb-8">Are you sure you want to start a new game? Your current guesses will be reset and a new wordle will be generated.</p>
+            <div className="flex items-center gap-4 justify-center">
+              <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-yellowBackground" onClick={() => setShowConfirm(false)}>No, take me back</motion.button>
+              <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-correct" onClick={handleReset}>Yes, I'm sure!</motion.button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="mb-4 relative">
         {alert && (
           <motion.div 
