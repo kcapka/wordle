@@ -112,8 +112,6 @@ export default function Wordle() {
     }))
   }
 
-  console.log('currentWord', currentSelectedWord)
-
   function handleSubmit() {
     if(currentSelectedWord.length < 5) {
       setAlert("Please guess a five letter word");
@@ -466,6 +464,14 @@ export default function Wordle() {
 
   //Game reset
   const [showConfirm, setShowConfirm] = useState(false);
+  function handleNewGame() {
+    setShowConfirm(true);
+    setAlert('');
+  }
+  function handleInstructionsButton() {
+    setShowInstructions(true);
+    setAlert('');
+  }
   function handleReset() {
     window.localStorage.clear();
     window.location.reload();
@@ -480,8 +486,8 @@ export default function Wordle() {
       <nav className="flex gap-8 mb-16 w-full justify-between">
         <h1 className={`font-sans text-xl md:text-5xl mb-4 tracking-[3.2px] font-bold`}>Wordle</h1>
         <div className="flex items-center text-sm md:text-base gap-4">
-          <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-yellowBackground" onClick={() => setShowInstructions(true)}>Instructions</motion.button>
-          <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-correct" onClick={() => setShowConfirm(true)}>New Game</motion.button>
+          <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-yellowBackground" onClick={handleInstructionsButton}>Instructions</motion.button>
+          <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-correct" onClick={handleNewGame}>New Game</motion.button>
         </div>
       </nav>
       {showConfirm && (
