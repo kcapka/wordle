@@ -129,6 +129,9 @@ export default function Wordle() {
       return;
     } else if(currentSelectedWord.join('') == word?.join('')) {
       setAlert(`Congrats! You guessed the wordle on guess ${currentGuess}`);
+      setTimeout(() => {
+        setAlert('');
+      }, 2000);
       currentSelectedWord.map((letter) => {
         handleKeyboardColors(letter, 'correct');
       })
@@ -227,6 +230,9 @@ export default function Wordle() {
       setCurrentGuess(6);
     } else if(currentGuess == 6) {
       setAlert(`Oh no, so close! The word was ${word?.join('').toUpperCase()}`);
+      setTimeout(() => {
+        setAlert('');
+      }, 2000);
       currentSelectedWord.map((letter, index) => {
         setGuessSix(prevGuessSix => [...prevGuessSix, letter]);
         if(letter == word[index]) {
