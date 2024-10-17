@@ -51,7 +51,7 @@ export default function Instructions({setShowInstructions}: any) {
                 <p className="h-10 w-10 p-[4px] font-bold border-2 border-border flex items-center justify-center text-2xl">E</p>
             </motion.div>
             <p className="pb-4 border-b mb-4 border-b-white"><strong>U</strong> is not in the word in any spot.</p>
-            <p className="text-xs mb-2">Note: This game and these instructions are taken directlly from the New York Times' game "Wordle". This is an educational and recreational reproduction of said game. Enjoy!</p>
+            <p className="text-xs mb-2">Note: This game and these instructions are taken directly from the New York Times game "Wordle". This is an educational and recreational reproduction of said game. Enjoy!</p>
             <Link to="https://www.nytimes.com/games/wordle" target="_blank">
             <p className="text-xs no-underline">https://www.nytimes.com/games/wordle</p>
             </Link>

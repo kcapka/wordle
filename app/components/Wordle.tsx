@@ -346,7 +346,7 @@ export default function Wordle() {
     }
     if(!wordData) {
       const randomIndex = Math.floor(Math.random() * 400);
-      const baseWord = possibleAnswers[randomIndex].toLowerCase().split('');
+      const baseWord = possibleAnswers[randomIndex]?.toLowerCase().split('');
       setWord(baseWord);
     }
 
