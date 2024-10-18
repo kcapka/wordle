@@ -82,7 +82,7 @@ export default function Wordle() {
   const [currentGuess, setCurrentGuess] = useState(1);
 
   //only used to show animation of new game button
-  const [win, setWin] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
   //variables for each guess and color for each guess
   //Ideally, I would have all needed variables stored in one variable in an object. For now, they are all separate and I have to store them all in local storage separately
@@ -116,6 +116,10 @@ export default function Wordle() {
   }
 
   function handleSubmit() {
+    if(gameOver) {
+      return
+    }
+
     if(currentSelectedWord.length < 5) {
       setAlert("Please guess a five letter word");
       setTimeout(() => {
@@ -135,7 +139,7 @@ export default function Wordle() {
       setTimeout(() => {
         setAlert('');
       }, 2000);
-      setWin(true);
+      setGameOver(true);
       currentSelectedWord.map((letter) => {
         handleKeyboardColors(letter, 'correct');
       })
@@ -237,7 +241,7 @@ export default function Wordle() {
       setTimeout(() => {
         setAlert('');
       }, 2000);
-      setWin(true);
+      setGameOver(true);
       currentSelectedWord.map((letter, index) => {
         setGuessSix(prevGuessSix => [...prevGuessSix, letter]);
         if(letter == word[index]) {
@@ -257,7 +261,7 @@ export default function Wordle() {
   }
 
   function handleBackSpace() {
-    if(currentSelectedWord.length > 0) {
+    if(currentSelectedWord.length > 0 && !gameOver) {
       setCurrentSelectedWord((prevCurrentSelectedWord) => prevCurrentSelectedWord.slice(0,-1));
     }
   }
@@ -476,7 +480,7 @@ export default function Wordle() {
   //Game reset
   const [showConfirm, setShowConfirm] = useState(false);
   function handleNewGame() {
-    setWin(false);
+    setGameOver(false);
     setShowConfirm(true);
     setAlert('');
   }
@@ -497,7 +501,7 @@ export default function Wordle() {
       scale: [1, 1.2, 1], // Example scaling animation
       transition: {
         duration: 1,
-        repeat: win ? Infinity : 0, // Loop indefinitely if isAnimating is true
+        repeat: gameOver ? Infinity : 0, // Loop indefinitely if isAnimating is true
         ease: "easeInOut",
       },
     },
@@ -513,7 +517,7 @@ export default function Wordle() {
         <div className="flex items-center text-sm md:text-base gap-4">
           <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-yellowBackground" onClick={handleInstructionsButton}>Instructions</motion.button>
           <motion.div initial={{scale: .5}} animate={{scale: [1.3, 1]}}>
-            <motion.button variants={animationVariants} initial="initial" animate={win ? "animate" : "initial"} className="rounded py-2 px-4 bg-correct" onClick={handleNewGame}>New Game</motion.button>
+            <motion.button variants={animationVariants} initial="initial" animate={gameOver ? "animate" : "initial"} className="rounded py-2 px-4 bg-correct" onClick={handleNewGame}>New Game</motion.button>
           </motion.div>
         </div>
       </nav>
@@ -548,14 +552,15 @@ export default function Wordle() {
       {/* Keyboard */}
       <div className="flex mb-2 items-center gap-2">
         {keyboardRowOne.map((letter, index) => (
-          <button key={index} onClick={() => handleLetterSelect(letter)} className={`${keyboardColors[letter] == 'correct' ? 'bg-correct' : keyboardColors[letter] == 'yellow' ? 'bg-yellowBackground' : keyboardColors[letter] == 'wrong' ? 'bg-border' : 'bg-grayLetter'} w-8 h-10 md:w-10 md:h-12 rounded flex items-center justify-center uppercase font-bold cursor-pointer`}>
+          <button key={index}
+          onClick={() => !gameOver && handleLetterSelect(letter)} className={`${keyboardColors[letter] == 'correct' ? 'bg-correct' : keyboardColors[letter] == 'yellow' ? 'bg-yellowBackground' : keyboardColors[letter] == 'wrong' ? 'bg-border' : 'bg-grayLetter'} w-8 h-10 md:w-10 md:h-12 rounded flex items-center justify-center uppercase font-bold cursor-pointer`}>
             {letter}
           </button>
         ))}
       </div>
       <div className="flex mb-2 items-center gap-2">
         {keyboardRowTwo.map((letter, index) => (
-          <button key={index} onClick={() => handleLetterSelect(letter)} className={`${keyboardColors[letter] == 'correct' ? 'bg-correct' : keyboardColors[letter] == 'yellow' ? 'bg-yellowBackground' : keyboardColors[letter] == 'wrong' ? 'bg-border' : 'bg-grayLetter'} w-8 h-10 md:w-10 md:h-12 rounded flex items-center justify-center uppercase font-bold cursor-pointer`}>
+          <button key={index} onClick={() => !gameOver && handleLetterSelect(letter)} className={`${keyboardColors[letter] == 'correct' ? 'bg-correct' : keyboardColors[letter] == 'yellow' ? 'bg-yellowBackground' : keyboardColors[letter] == 'wrong' ? 'bg-border' : 'bg-grayLetter'} w-8 h-10 md:w-10 md:h-12 rounded flex items-center justify-center uppercase font-bold cursor-pointer`}>
             {letter}
           </button>
         ))}
@@ -565,7 +570,7 @@ export default function Wordle() {
             Enter
         </button>
         {keyboardRowThree.map((letter, index) => (
-          <button key={index} onClick={() => handleLetterSelect(letter)} className={`${keyboardColors[letter] == 'correct' ? 'bg-correct' : keyboardColors[letter] == 'yellow' ? 'bg-yellowBackground' : keyboardColors[letter] == 'wrong' ? 'bg-border' : 'bg-grayLetter'} w-8 h-10 md:w-10 md:h-12 rounded flex items-center justify-center uppercase font-bold cursor-pointer`}>
+          <button key={index} onClick={() => !gameOver && handleLetterSelect(letter)} className={`${keyboardColors[letter] == 'correct' ? 'bg-correct' : keyboardColors[letter] == 'yellow' ? 'bg-yellowBackground' : keyboardColors[letter] == 'wrong' ? 'bg-border' : 'bg-grayLetter'} w-8 h-10 md:w-10 md:h-12 rounded flex items-center justify-center uppercase font-bold cursor-pointer`}>
             {letter}
           </button>
         ))}
