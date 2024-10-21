@@ -272,6 +272,10 @@ export default function Wordle() {
       key: 'ans_w_current',
     },
     {
+      variable: gameOver,
+      key: 'wrd_gameOver'
+    },
+    {
       variable: currentSelectedWord,
       key: 'wrd_currentSelectedWord',
     },
@@ -352,6 +356,11 @@ export default function Wordle() {
       const randomIndex = Math.floor(Math.random() * 400);
       const baseWord = possibleAnswers[randomIndex]?.toLowerCase().split('');
       setWord(baseWord);
+    }
+
+    const gameOverData = window.localStorage.getItem('wrd_gameOver');
+    if(gameOverData && gameOverData !== 'false') {
+      setGameOver(JSON.parse(gameOverData));
     }
 
     const keyboardColorsData = window.localStorage.getItem('wrd_keyboardColors');
@@ -475,12 +484,11 @@ export default function Wordle() {
       window.localStorage.setItem(key.key, JSON.stringify(key.variable));
     });
     window.localStorage.setItem('wrd_showInstructions', 'true')
-  }, [word, currentSelectedWord, currentGuess, guessOne, guessOneColors, guessTwo, guessTwoColors, guessThree, guessThreeColors, guessFour, guessFourColors, guessFive, guessFiveColors, guessSix, guessSixColors]);
+  }, [word, currentSelectedWord, currentGuess, guessOne, guessOneColors, guessTwo, guessTwoColors, guessThree, guessThreeColors, guessFour, guessFourColors, guessFive, guessFiveColors, guessSix, guessSixColors, gameOver]);
 
   //Game reset
   const [showConfirm, setShowConfirm] = useState(false);
   function handleNewGame() {
-    setGameOver(false);
     setShowConfirm(true);
     setAlert('');
   }
@@ -492,6 +500,7 @@ export default function Wordle() {
     window.localStorage.clear();
     window.location.reload();
     window.localStorage.setItem('wrd_showInstructions', 'true');
+    window.localStorage.setItem('wrd_gameOver', 'false');
   }
 
   const animationVariants = {
