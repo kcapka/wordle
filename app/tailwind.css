@@ -3,5 +3,39 @@
 @tailwind utilities;
 
 body{
-    background-color: rgb(18,18,19);
+    background-color: rgb(10,10,11);
 }
+
+@layer utilities {
+    .default-px {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  
+    .default-py {
+      padding-top: 64px;
+      padding-bottom: 64px;
+    }
+  
+    @screen md {
+      .default-px {
+        padding-left: 40px;
+        padding-right: 40px;
+      }
+      .default-py {
+        padding-top: 72px;
+        padding-bottom: 72px;
+      }
+    }
+  
+    @screen lg {
+      .default-px {
+        padding-left: 60px;
+        padding-right: 60px;
+      }
+      .default-py {
+        padding-top: 90px;
+        padding-bottom: 90px;
+      }
+    }
+  }

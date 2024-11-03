@@ -1,6 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
-import { useState } from "react";
-import Wordle from "~/components/Wordle";
+import HomepageData from "~/components/HomepageData";
 
 export const meta: MetaFunction = () => {
 
@@ -41,7 +40,7 @@ export default function Index() {
 
   return (
     <div>
-      <Wordle />
+      <HomepageData />
     </div>
   );
 }
