@@ -1,5 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
-import HomepageData from "~/components/HomepageData";
+import { Link } from "@remix-run/react";
+import HomepageHero from "~/components/Homepage/HomepageHero";
 
 export const meta: MetaFunction = () => {
 
@@ -40,7 +41,15 @@ export default function Index() {
 
   return (
     <div>
-      <HomepageData />
+      <HomepageHero />
+      <div className="h-screen flex flex-col gap-10 items-center justify-center">
+        <h2 className="font-display text-white text-5xl text-center max-w-[800px]">Since this site is currently under construction, click below to play Wordle!</h2>
+        <Link to="/wordle">
+          <div className="py-4 px-10 text-correct font-bold rounded bg-[#1b1b1b] border border-border">
+            Play Wordle!
+          </div>
+        </Link>
+      </div>
     </div>
   );
 }

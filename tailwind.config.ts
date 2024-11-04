@@ -22,6 +22,9 @@ export default {
           '"Segoe UI Symbol"',
           '"Noto Color Emoji"',
         ],
+        display: [
+          "Federant", "serif"
+        ]
       },
     },
     fontSize: {

@@ -2,8 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-color: rgb(29, 29, 29) transparent;
+}
+
 body{
     background-color: rgb(10,10,11);
+}
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
 }
 
 @layer utilities {
