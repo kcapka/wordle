@@ -4,14 +4,14 @@ import HomepageHero from "~/components/Homepage/HomepageHero";
 
 export const meta: MetaFunction = () => {
 
-  const seoImg = '/images/wordle-preview.jpg';
+  const seoImg = '/images/icons/logo-cartridge.svg';
 
   return [
-    { title: "Wordle Clone" },
-    { name: "description", content: "This site is a clone of the popular New York Times game, Wordle! However, as opposed to the original game, you can play this one as many times a day as you'd like!" },
+    { title: "KRC Games" },
+    { name: "description", content: "More to come..." },
     {
       property: 'og:description',
-      content: "This site is a clone of the popular New York Times game, Wordle! However, as opposed to the original game, you can play this one as many times a day as you'd like!",
+      content: "More to come...",
     },
     {
       property: 'og:image',
