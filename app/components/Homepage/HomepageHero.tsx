@@ -11,7 +11,7 @@ export default function HomepageHero() {
   const windowWidth = useWindowWidth();
 
   return (
-    <section className="min-h-[100svh] flex items-center bg-center bg-cover" style={{backgroundImage: 'linear-gradient(to bottom, rgb(0,0,0,0.95), rgb(0,0,0,0.6)), url("/images/space-background.jpg")'}}>
+    <section className="min-h-[100svh] pt-[100px] md:pt-0 flex items-center bg-center bg-cover" style={{backgroundImage: 'linear-gradient(to bottom, rgb(0,0,0,0.95), rgb(0,0,0,0.6)), url("/images/space-background.jpg")'}}>
       <div className="max-w-[1200px] default-px mx-auto flex flex-col lg:flex-row items-center justify-center">
         <div>
           <h1 className="text-white leading-[1.1] mb-4 text-5xl font-display lg:text-[70px] font-bold"><StaggerText>Welcome to KRC Games</StaggerText></h1>

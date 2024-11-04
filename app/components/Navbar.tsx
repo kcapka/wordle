@@ -9,7 +9,7 @@ export default function Navbar() {
     const scrollPosition = useScrollPosition();
 
     return (
-        <nav className={`shadow-xl duration-200 flex z-40 fixed top-0 left-0 mb-8 default-px py-3 items-center w-full justify-between`} style={scrollPosition > 10 ? {backdropFilter: 'blur(20px)', borderBottom: '1px solid #333333', backgroundColor: 'rgba(0,0,0,0.5)'} : {border: 'none', backgroundColor: 'transparent', backdropFilter: 'none'}}>
+        <nav className={`shadow-xl duration-200 flex z-40 fixed top-0 left-0 mb-8 default-px py-6 items-center w-full justify-between`} style={scrollPosition > 10 ? {backdropFilter: 'blur(20px)', borderBottom: '1px solid #333333', backgroundColor: 'rgba(0,0,0,0.5)'} : {border: 'none', backgroundColor: 'transparent', backdropFilter: 'none'}}>
             <Link to="/">
                 <img src="/images/icons/logo.svg" alt="KRC Games Logo" className="h-8" />
             </Link>
