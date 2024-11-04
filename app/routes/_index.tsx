@@ -1,17 +1,17 @@
 import type { MetaFunction } from "@remix-run/node";
-import { useState } from "react";
-import Wordle from "~/components/Wordle";
+import { Link } from "@remix-run/react";
+import HomepageHero from "~/components/Homepage/HomepageHero";
 
 export const meta: MetaFunction = () => {
 
-  const seoImg = '/images/wordle-preview.jpg';
+  const seoImg = '/images/icons/logo-cartridge.svg';
 
   return [
-    { title: "Wordle Clone" },
-    { name: "description", content: "This site is a clone of the popular New York Times game, Wordle! However, as opposed to the original game, you can play this one as many times a day as you'd like!" },
+    { title: "KRC Games" },
+    { name: "description", content: "More to come..." },
     {
       property: 'og:description',
-      content: "This site is a clone of the popular New York Times game, Wordle! However, as opposed to the original game, you can play this one as many times a day as you'd like!",
+      content: "More to come...",
     },
     {
       property: 'og:image',
@@ -41,7 +41,15 @@ export default function Index() {
 
   return (
     <div>
-      <Wordle />
+      <HomepageHero />
+      <div className="h-screen flex flex-col gap-10 items-center justify-center">
+        <h2 className="font-display text-white text-5xl text-center max-w-[800px]">Since this site is currently under construction, click below to play Wordle!</h2>
+        <Link to="/wordle">
+          <div className="py-4 px-10 text-correct font-bold rounded bg-[#1b1b1b] border border-border">
+            Play Wordle!
+          </div>
+        </Link>
+      </div>
     </div>
   );
 }

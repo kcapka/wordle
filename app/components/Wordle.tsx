@@ -517,22 +517,13 @@ export default function Wordle() {
   };
 
   return (
-    <div className="flex min-h-[100svh] items-center flex-col py-8 px-[20px] md:px-[60px] justify-start text-white bg-[rgb(18,18,19)]">
+    <div className="flex min-h-[100svh] items-center flex-col pb-8 px-[20px] md:px-[60px] justify-start text-white bg-[rgb(10,10,11)]">
       {showInstructions && (
         <Instructions setShowInstructions={setShowInstructions} />
       )}
-      <nav className="flex gap-8 mb-16 items-center w-full justify-between">
-        <h1 className={`font-sans text-xl md:text-5xl mb-4 tracking-[3.2px] font-bold`}>Wordle</h1>
-        <div className="flex items-center text-sm md:text-base gap-4">
-          <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-yellowBackground" onClick={handleInstructionsButton}>Instructions</motion.button>
-          <motion.div initial={{scale: .5}} animate={{scale: [1.3, 1]}}>
-            <motion.button variants={animationVariants} initial="initial" animate={gameOver ? "animate" : "initial"} className="rounded py-2 px-4 bg-correct" onClick={handleNewGame}>New Game</motion.button>
-          </motion.div>
-        </div>
-      </nav>
       {showConfirm && (
         <div className="fixed w-[100svw] z-10 h-[100svh] top-0 left-0 bg-[rgb(0,0,0,0.7)] flex items-center justify-center">
-          <div className="rounded-lg text-lg text-center font-sans bg-[rgb(18,18,19)] p-8 w-full max-w-[600px]">
+          <div className="rounded-lg text-lg text-center font-body bg-[rgb(18,18,19)] p-8 w-full max-w-[600px]">
             <p className="mb-8">Are you sure you want to start a new game? Your current guesses will be reset and a new wordle will be generated.</p>
             <div className="flex items-center gap-4 justify-center">
               <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-yellowBackground" onClick={() => setShowConfirm(false)}>No, take me back</motion.button>
@@ -550,7 +541,14 @@ export default function Wordle() {
             <p className="text-center text-sm w-[200px] mx-auto py-2 px-6 text-black bg-white rounded">{alert}</p>
           </motion.div>
         )}
-        {/* Guesses */}
+        {/* Game */}
+        <h1 className={`font-body text-4xl text-center md:text-5xl mb-4 tracking-[3.2px] font-bold`}>Wordle</h1>
+        <div className="flex items-center w-full mb-8 justify-center text-xs md:text-sm gap-4">
+          <motion.button initial={{scale: .5}} animate={{scale: [1.3, 1]}} className="rounded py-2 px-4 bg-yellowBackground" onClick={handleInstructionsButton}>Instructions</motion.button>
+          <motion.div initial={{scale: .5}} animate={{scale: [1.3, 1]}}>
+            <motion.button variants={animationVariants} initial="initial" animate={gameOver ? "animate" : "initial"} className="rounded py-2 px-4 bg-correct" onClick={handleNewGame}>New Game</motion.button>
+          </motion.div>
+        </div>
         <Guess guess={guessOne} currentGuess = {currentGuess} order={1} guessColors={guessOneColors} currentSelectedWord={currentSelectedWord} />
         <Guess guess={guessTwo} currentGuess = {currentGuess} order={2} guessColors={guessTwoColors} currentSelectedWord={currentSelectedWord} />
         <Guess guess={guessThree} currentGuess = {currentGuess} order={3} guessColors={guessThreeColors} currentSelectedWord={currentSelectedWord} />

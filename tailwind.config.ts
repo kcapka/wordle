@@ -8,10 +8,11 @@ export default {
         border: 'rgb(58,58,60)',
         yellowBackground: 'rgb(178,159,77)',
         correct: 'rgb(97, 139, 85)',
-        grayLetter: 'rgb(130,131,132)'
+        grayLetter: 'rgb(130,131,132)',
+        white: '#EEEEEE'
       },
       fontFamily: {
-        sans: [
+        body: [
           '"Inter"',
           "ui-sans-serif",
           "system-ui",
@@ -21,7 +22,24 @@ export default {
           '"Segoe UI Symbol"',
           '"Noto Color Emoji"',
         ],
+        display: [
+          "Federant", "serif"
+        ]
       },
+    },
+    fontSize: {
+      '2xs': '10px',
+      xs: '12px',
+      sm: '14px',
+      // Minor Third Type	Scale kicks in here:
+      base: '16px',
+      lg: '19.2px',
+      xl: '23.04px',
+      '2xl': '27.65px',
+      '3xl': '33.18px',
+      '4xl': '39.81px',
+      '5xl': '47.78px',
+      '6xl': '57.33px',
     },
   },
   plugins: [],
