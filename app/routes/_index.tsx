@@ -42,10 +42,10 @@ export default function Index() {
   return (
     <div>
       <HomepageHero />
-      <div className="h-screen flex flex-col gap-10 items-center justify-center">
-        <h2 className="font-display text-white text-5xl text-center max-w-[800px]">Since this site is currently under construction, click below to play Wordle!</h2>
+      <div className="default-px py-[80px] flex flex-col gap-10 items-center">
+        <h2 className="font-display default-px text-white text-4xl text-center max-w-[800px]">Since this site is currently under construction, click below to play Wordle!</h2>
         <Link to="/wordle">
-          <div className="py-4 px-10 text-correct font-bold rounded bg-[#1b1b1b] border border-border">
+          <div className="py-4 px-10 text-white font-bold rounded bg-[#1b1b1b] border border-border">
             Play Wordle!
           </div>
         </Link>
