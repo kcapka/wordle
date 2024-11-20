@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        border: 'rgb(58,58,60)',
+        border: '#222222',
         yellowBackground: 'rgb(178,159,77)',
         correct: 'rgb(97, 139, 85)',
         grayLetter: 'rgb(130,131,132)',

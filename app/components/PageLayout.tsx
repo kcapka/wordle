@@ -1,4 +1,5 @@
 import Navbar from "./Navbar";
+import { Footer } from "./Footer";
 
 
 export default function PageLayout(props:any) {
@@ -7,6 +8,7 @@ export default function PageLayout(props:any) {
         <>
             <Navbar />
             <main>{props.children}</main>
+            <Footer />
         </>
     )
 }
